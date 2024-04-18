@@ -25,7 +25,14 @@ export async function action(): Promise<void> {
       return
     }
 
+    const basePathsString = core.getInput('base-paths')
+    if (!pathsString) {
+      core.setFailed("'base-paths' is missing")
+      return
+    }
+
     const reportPaths = pathsString.split(',')
+    const baseReportPaths = basePathsString.split(',')
     const minCoverageOverall = parseFloat(core.getInput('min-coverage-overall'))
     const minCoverageChangedFiles = parseFloat(
       core.getInput('min-coverage-changed-files')
@@ -80,14 +87,24 @@ export async function action(): Promise<void> {
     const client = github.getOctokit(token)
 
     if (debugMode) core.info(`reportPaths: ${reportPaths}`)
+    if (debugMode) core.info(`baseReportPaths: ${baseReportPaths}`)
     const reportsJsonAsync = getJsonReports(reportPaths, debugMode)
+    const baseReportsJsonAsync = getJsonReports(baseReportPaths, debugMode)
     const changedFiles = await getChangedFiles(base, head, client, debugMode)
     if (debugMode) core.info(`changedFiles: ${debug(changedFiles)}`)
 
-    const reportsJson = await reportsJsonAsync
+    const [reportsJson, baseReportsJson] = await Promise.all([
+      reportsJsonAsync,
+      baseReportsJsonAsync,
+    ])
     const reports = reportsJson.map(report => report['report'])
+    const baseReports = baseReportsJson.map(report => report['report'])
 
-    const project: Project = getProjectCoverage(reports, changedFiles)
+    const project: Project = getProjectCoverage(
+      reports,
+      baseReports,
+      changedFiles
+    )
     if (debugMode) core.info(`project: ${debug(project)}`)
     core.setOutput(
       'coverage-overall',

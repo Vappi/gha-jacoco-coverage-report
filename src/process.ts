@@ -2,20 +2,32 @@ import {getFilesWithCoverage, TAG} from './util'
 import {ChangedFile} from './models/github'
 import {Coverage, File, Module, Project} from './models/project'
 
+const DUMMY_MODULE = {
+  packages: [],
+  counters: [],
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function getProjectCoverage(
   reports: any[],
+  baseReports: any[],
   changedFiles: ChangedFile[]
 ): Project {
   const moduleCoverages: Module[] = []
   const modules = getModulesFromReports(reports)
+  const baseModules = getModulesFromReports(baseReports)
   for (const module of modules) {
+    const baseModule =
+      baseModules.find(m => m.name === module.name) ?? DUMMY_MODULE
+
     const files = getFileCoverageFromPackages(
       [].concat(...module.packages),
+      [].concat(...baseModule.packages),
       changedFiles
     )
     if (files.length !== 0) {
       const moduleCoverage = getModuleCoverage(module.root)
+      const baseModuleCoverage = getModuleCoverage(module.root)
       const changedMissed = files
         .map(file => file.changed.missed)
         .reduce(sumReducer, 0.0)
@@ -29,6 +41,11 @@ export function getProjectCoverage(
           percentage: moduleCoverage.percentage,
           covered: moduleCoverage.covered,
           missed: moduleCoverage.missed,
+        },
+        base: {
+          percentage: baseModuleCoverage.percentage,
+          covered: baseModuleCoverage.covered,
+          missed: baseModuleCoverage.missed,
         },
         changed: {
           covered: changedCovered,
@@ -53,6 +70,7 @@ export function getProjectCoverage(
     .reduce(sumReducer, 0.0)
 
   const projectCoverage = getOverallProjectCoverage(reports)
+  const baseProjectCoverage = getOverallProjectCoverage(baseReports)
   const totalPercentage = getTotalPercentage(totalFiles)
   return {
     modules: moduleCoverages,
@@ -61,6 +79,11 @@ export function getProjectCoverage(
       covered: projectCoverage.covered,
       missed: projectCoverage.missed,
       percentage: projectCoverage.percentage,
+    },
+    base: {
+      covered: baseProjectCoverage.covered,
+      missed: baseProjectCoverage.missed,
+      percentage: baseProjectCoverage.percentage,
     },
     changed: {
       covered: changedCovered,
@@ -115,23 +138,40 @@ function getModuleFromParent(parent: any): any | null {
 
 function getFileCoverageFromPackages(
   packages: any[],
+  basePackages: ChangedFile[],
   files: ChangedFile[]
 ): File[] {
   const resultFiles: File[] = []
   const jacocoFiles = getFilesWithCoverage(packages)
+  const baseJacocoFiles = getFilesWithCoverage(basePackages)
+
   for (const jacocoFile of jacocoFiles) {
     const name = jacocoFile.name
     const packageName = jacocoFile.packageName
     const githubFile = files.find(function (f) {
       return f.filePath.endsWith(`${packageName}/${name}`)
     })
+
+    const baseJacocoFile = baseJacocoFiles?.find(function (f) {
+      return (
+        f.packageName === jacocoFile.packageName && f.name === jacocoFile.name
+      )
+    })
+
     if (githubFile) {
       const instruction = jacocoFile.counters.find(
         counter => counter.name === 'instruction'
       )
       if (instruction) {
+        const baseInstruction = baseJacocoFile?.counters.find(
+          counter => counter.name === 'instruction'
+        )
+
         const missed = instruction.missed
         const covered = instruction.covered
+        const baseMissed = baseInstruction?.missed ?? 0
+        const baseCovered = baseInstruction?.covered ?? 0
+
         const lines = []
         for (const lineNumber of githubFile.lines) {
           const jacocoLine = jacocoFile.lines.find(
@@ -156,6 +196,11 @@ function getFileCoverageFromPackages(
             missed,
             covered,
             percentage: calculatePercentage(covered, missed),
+          },
+          base: {
+            missed: baseMissed,
+            covered: baseCovered,
+            percentage: calculatePercentage(baseCovered, baseMissed),
           },
           changed: {
             missed: changedMissed,

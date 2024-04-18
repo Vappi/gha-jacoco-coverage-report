@@ -5,6 +5,8 @@
 A Github action that publishes the JaCoCo report as a comment in the Pull Request with customizable pass percentage for
 modified modules, files and the overall project. You can view the coverage of just the changed files in your pull request.
 
+note: This fork only changes the delta be parsed from the difference between `paths` and `base-paths`
+
 ## Usage
 
 ### Pre-requisites
@@ -17,6 +19,7 @@ for [Creating a workflow file](https://help.github.com/en/articles/configuring-a
 ### Inputs
 
 - `paths` - [**required**] Comma separated paths of the generated jacoco xml files (supports wildcard glob pattern)
+- `base-paths` - [**required**] Comma separated paths of the generated jacoco xml files that contains coverage from main/base branch (supports wildcard glob pattern)
 - `token` - [**required**] Github personal token to add commits to Pull Request
 - `min-coverage-overall` - [*optional* {default: 80%}] The minimum code coverage that is required to pass for overall project
 - `min-coverage-changed-files` - [*optional* {default: 80%}] The minimum code coverage that is required to pass for changed files
@@ -64,8 +67,9 @@ jobs:
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: |
-            ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
             ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+          base-paths: |
+            ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60

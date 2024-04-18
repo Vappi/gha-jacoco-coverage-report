@@ -18,6 +18,8 @@ describe('Single report', function () {
     switch (key) {
       case 'paths':
         return './__tests__/__fixtures__/report.xml'
+      case 'base-paths':
+        return './__tests__/__fixtures__/report.xml'
       case 'token':
         return 'SMPLEHDjasdf876a987'
       case 'min-coverage-overall':
@@ -284,14 +286,14 @@ describe('Single report', function () {
         await action.action()
 
         expect(createComment.mock.calls[0][0].body)
-          .toEqual(`|Overall Project|35.25% **\`-17.21%\`**|red_circle|
+          .toEqual(`|Overall Project|35.25%|red_circle|
 |:-|:-|:-:|
 |Files changed|38.24%|red_circle|
 <br>
 
 |File|Coverage||
 |:-|:-|:-:|
-|[Math.kt](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/kotlin/com/madrapps/jacoco/Math.kt)|42% **\`-42%\`**|red_circle|
+|[Math.kt](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/kotlin/com/madrapps/jacoco/Math.kt)|42%|red_circle|
 |[Utility.java](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/java/com/madrapps/jacoco/Utility.java)|18.03%|:green_circle:|`)
       })
     })
@@ -371,12 +373,12 @@ function initContext(eventName, payload): void {
   context.owner = 'madrapps'
 }
 
-const PROPER_COMMENT = `|Overall Project|35.25% **\`-17.21%\`**|:x:|
+const PROPER_COMMENT = `|Overall Project|35.25%|:x:|
 |:-|:-|:-:|
 |Files changed|38.24%|:x:|
 <br>
 
 |File|Coverage||
 |:-|:-|:-:|
-|[Math.kt](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/kotlin/com/madrapps/jacoco/Math.kt)|42% **\`-42%\`**|:x:|
+|[Math.kt](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/kotlin/com/madrapps/jacoco/Math.kt)|42%|:x:|
 |[Utility.java](https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/java/com/madrapps/jacoco/Utility.java)|18.03%|:green_apple:|`

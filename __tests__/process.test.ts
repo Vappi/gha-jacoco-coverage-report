@@ -11,12 +11,21 @@ describe('process', function () {
         const v = getSingleReport()
         const reports = await v
         const changedFiles: ChangedFile[] = []
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           modules: [],
           isMultiModule: false,
           'coverage-changed-files': 100,
           overall: {
+            covered: 43,
+            missed: 79,
+            percentage: 35.25,
+          },
+          base: {
             covered: 43,
             missed: 79,
             percentage: 35.25,
@@ -34,7 +43,11 @@ describe('process', function () {
         const changedFiles = CHANGED_FILE.SINGLE_MODULE.filter(file => {
           return file.filePath.endsWith('Math.kt')
         })
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           'coverage-changed-files': 42,
           isMultiModule: false,
@@ -90,6 +103,11 @@ describe('process', function () {
                     missed: 29,
                     percentage: 42,
                   },
+                  base: {
+                    covered: 21,
+                    missed: 29,
+                    percentage: 42,
+                  },
                   changed: {
                     covered: 10,
                     missed: 21,
@@ -100,6 +118,11 @@ describe('process', function () {
               ],
               name: 'jacoco-playground',
               overall: {
+                percentage: 35.25,
+                covered: 43,
+                missed: 79,
+              },
+              base: {
                 percentage: 35.25,
                 covered: 43,
                 missed: 79,
@@ -116,6 +139,11 @@ describe('process', function () {
             missed: 79,
             percentage: 35.25,
           },
+          base: {
+            covered: 43,
+            missed: 79,
+            percentage: 35.25,
+          },
           changed: {
             covered: 10,
             missed: 21,
@@ -127,7 +155,11 @@ describe('process', function () {
       it('multiple files changed', async () => {
         const reports = await getSingleReport()
         const changedFiles = CHANGED_FILE.SINGLE_MODULE
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual(PROJECT.SINGLE_MODULE)
       })
     })
@@ -136,12 +168,21 @@ describe('process', function () {
       it('no files changed', async () => {
         const reports = await getMultipleReports()
         const changedFiles: ChangedFile[] = []
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           modules: [],
           isMultiModule: true,
           'coverage-changed-files': 100,
           overall: {
+            covered: 40,
+            missed: 156,
+            percentage: 20.41,
+          },
+          base: {
             covered: 40,
             missed: 156,
             percentage: 20.41,
@@ -159,7 +200,11 @@ describe('process', function () {
         const changedFiles = CHANGED_FILE.MULTI_MODULE.filter(file => {
           return file.filePath.endsWith('StringOp.java')
         })
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           'coverage-changed-files': 84.62,
           isMultiModule: true,
@@ -185,6 +230,11 @@ describe('process', function () {
                     missed: 2,
                     percentage: 84.62,
                   },
+                  base: {
+                    covered: 11,
+                    missed: 2,
+                    percentage: 84.62,
+                  },
                   changed: {
                     covered: 3,
                     missed: 2,
@@ -195,6 +245,11 @@ describe('process', function () {
               ],
               name: 'text',
               overall: {
+                percentage: 84.62,
+                covered: 11,
+                missed: 2,
+              },
+              base: {
                 percentage: 84.62,
                 covered: 11,
                 missed: 2,
@@ -211,6 +266,11 @@ describe('process', function () {
             missed: 156,
             percentage: 20.41,
           },
+          base: {
+            covered: 40,
+            missed: 156,
+            percentage: 20.41,
+          },
           changed: {
             covered: 3,
             missed: 2,
@@ -222,7 +282,11 @@ describe('process', function () {
       it('multiple files changed', async () => {
         const reports = await getMultipleReports()
         const changedFiles = CHANGED_FILE.MULTI_MODULE
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual(PROJECT.MULTI_MODULE)
       })
     })
@@ -231,12 +295,21 @@ describe('process', function () {
       it('no files changed', async () => {
         const reports = await getAggregateReport()
         const changedFiles: ChangedFile[] = []
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           modules: [],
           isMultiModule: true,
           'coverage-changed-files': 100,
           overall: {
+            covered: 28212,
+            missed: 8754,
+            percentage: 76.32,
+          },
+          base: {
             covered: 28212,
             missed: 8754,
             percentage: 76.32,
@@ -254,7 +327,11 @@ describe('process', function () {
         const changedFiles = CHANGED_FILE.MULTI_MODULE.filter(file => {
           return file.filePath.endsWith('MainViewModel.kt')
         })
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           'coverage-changed-files': 58.82,
           isMultiModule: true,
@@ -263,6 +340,11 @@ describe('process', function () {
               files: [
                 {
                   overall: {
+                    covered: 10,
+                    missed: 7,
+                    percentage: 58.82,
+                  },
+                  base: {
                     covered: 10,
                     missed: 7,
                     percentage: 58.82,
@@ -283,6 +365,11 @@ describe('process', function () {
                 covered: 10,
                 missed: 110,
               },
+              base: {
+                percentage: 8.33,
+                covered: 10,
+                missed: 110,
+              },
               changed: {
                 covered: 0,
                 missed: 0,
@@ -291,6 +378,11 @@ describe('process', function () {
             },
           ],
           overall: {
+            covered: 28212,
+            missed: 8754,
+            percentage: 76.32,
+          },
+          base: {
             covered: 28212,
             missed: 8754,
             percentage: 76.32,
@@ -312,7 +404,11 @@ describe('process', function () {
             file.filePath.endsWith('OnClickEvent.kt')
           )
         })
-        const actual = process.getProjectCoverage(reports, changedFiles)
+        const actual = process.getProjectCoverage(
+          reports,
+          reports,
+          changedFiles
+        )
         expect(actual).toEqual({
           'coverage-changed-files': 65.91,
           isMultiModule: true,
@@ -332,6 +428,11 @@ describe('process', function () {
                     missed: 8,
                     percentage: 70.37,
                   },
+                  base: {
+                    covered: 19,
+                    missed: 8,
+                    percentage: 70.37,
+                  },
                   changed: {
                     covered: 0,
                     missed: 5,
@@ -347,6 +448,11 @@ describe('process', function () {
                 covered: 19,
                 missed: 8,
               },
+              base: {
+                percentage: 70.37,
+                covered: 19,
+                missed: 8,
+              },
               changed: {
                 covered: 0,
                 missed: 5,
@@ -357,6 +463,11 @@ describe('process', function () {
               files: [
                 {
                   overall: {
+                    covered: 10,
+                    missed: 7,
+                    percentage: 58.82,
+                  },
+                  base: {
                     covered: 10,
                     missed: 7,
                     percentage: 58.82,
@@ -377,6 +488,11 @@ describe('process', function () {
                 covered: 10,
                 missed: 110,
               },
+              base: {
+                percentage: 8.33,
+                covered: 10,
+                missed: 110,
+              },
               changed: {
                 covered: 0,
                 missed: 0,
@@ -385,6 +501,11 @@ describe('process', function () {
             },
           ],
           overall: {
+            covered: 28212,
+            missed: 8754,
+            percentage: 76.32,
+          },
+          base: {
             covered: 28212,
             missed: 8754,
             percentage: 76.32,

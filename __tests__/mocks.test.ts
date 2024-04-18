@@ -133,6 +133,11 @@ export const PROJECT = {
               covered: 11,
               percentage: 100,
             },
+            base: {
+              missed: 0,
+              covered: 11,
+              percentage: 100,
+            },
             changed: {
               covered: 0,
               missed: 0,
@@ -144,6 +149,11 @@ export const PROJECT = {
             name: 'Math.kt',
             url: 'https://github.com/thsaravana/jacoco-playground/blob/14a554976c0e5909d8e69bc8cce72958c49a7dc5/src/main/kotlin/com/madrapps/jacoco/Math.kt',
             overall: {
+              missed: 29,
+              covered: 21,
+              percentage: 42,
+            },
+            base: {
               missed: 29,
               covered: 21,
               percentage: 42,
@@ -204,6 +214,11 @@ export const PROJECT = {
               covered: 11,
               percentage: 18.03,
             },
+            base: {
+              missed: 50,
+              covered: 11,
+              percentage: 18.03,
+            },
             changed: {
               missed: 0,
               covered: 3,
@@ -223,6 +238,11 @@ export const PROJECT = {
           missed: 79,
           percentage: 35.25,
         },
+        base: {
+          covered: 43,
+          missed: 79,
+          percentage: 35.25,
+        },
         changed: {
           covered: 13,
           missed: 21,
@@ -233,6 +253,11 @@ export const PROJECT = {
     isMultiModule: false,
     'coverage-changed-files': 35.25,
     overall: {
+      covered: 43,
+      missed: 79,
+      percentage: 35.25,
+    },
+    base: {
       covered: 43,
       missed: 79,
       percentage: 35.25,
@@ -252,6 +277,11 @@ export const PROJECT = {
             name: 'StringOp.java',
             url: 'https://github.com/thsaravana/jacoco-android-playground/blob/63aa82c13d2a6aadccb7a06ac7cb6834351b8474/text/src/main/java/com/madrapps/text/StringOp.java',
             overall: {
+              missed: 2,
+              covered: 11,
+              percentage: 84.62,
+            },
+            base: {
               missed: 2,
               covered: 11,
               percentage: 84.62,
@@ -280,6 +310,11 @@ export const PROJECT = {
           covered: 11,
           missed: 2,
         },
+        base: {
+          percentage: 84.62,
+          covered: 11,
+          missed: 2,
+        },
         changed: {
           covered: 3,
           missed: 2,
@@ -293,6 +328,11 @@ export const PROJECT = {
             name: 'Math.kt',
             url: 'https://github.com/thsaravana/jacoco-android-playground/blob/63aa82c13d2a6aadccb7a06ac7cb6834351b8474/math/src/main/java/com/madrapps/math/Math.kt',
             overall: {
+              missed: 13,
+              covered: 19,
+              percentage: 59.38,
+            },
+            base: {
               missed: 13,
               covered: 19,
               percentage: 59.38,
@@ -314,6 +354,11 @@ export const PROJECT = {
             name: 'Statistics.kt',
             url: 'https://github.com/thsaravana/jacoco-android-playground/blob/63aa82c13d2a6aadccb7a06ac7cb6834351b8474/math/src/main/java/com/madrapps/math/Statistics.kt',
             overall: {
+              missed: 5,
+              covered: 0,
+              percentage: 0,
+            },
+            base: {
               missed: 5,
               covered: 0,
               percentage: 0,
@@ -342,6 +387,11 @@ export const PROJECT = {
           covered: 19,
           missed: 18,
         },
+        base: {
+          percentage: 51.35,
+          covered: 19,
+          missed: 18,
+        },
         changed: {
           covered: 0,
           missed: 10,
@@ -355,6 +405,11 @@ export const PROJECT = {
             name: 'MainViewModel.kt',
             url: 'https://github.com/thsaravana/jacoco-android-playground/blob/63aa82c13d2a6aadccb7a06ac7cb6834351b8474/app/src/main/java/com/madrapps/playground/MainViewModel.kt',
             overall: {
+              missed: 18,
+              covered: 10,
+              percentage: 35.71,
+            },
+            base: {
               missed: 18,
               covered: 10,
               percentage: 35.71,
@@ -380,6 +435,11 @@ export const PROJECT = {
               covered: 0,
               percentage: 0,
             },
+            base: {
+              missed: 100,
+              covered: 0,
+              percentage: 0,
+            },
             changed: {
               missed: 14,
               covered: 0,
@@ -397,6 +457,11 @@ export const PROJECT = {
             name: 'OnClickEvent.kt',
             url: 'https://github.com/thsaravana/jacoco-android-playground/blob/63aa82c13d2a6aadccb7a06ac7cb6834351b8474/app/src/main/java/com/madrapps/playground/events/OnClickEvent.kt',
             overall: {
+              missed: 4,
+              covered: 0,
+              percentage: 0,
+            },
+            base: {
               missed: 4,
               covered: 0,
               percentage: 0,
@@ -425,6 +490,11 @@ export const PROJECT = {
           covered: 10,
           missed: 136,
         },
+        base: {
+          percentage: 6.85,
+          covered: 10,
+          missed: 136,
+        },
         changed: {
           covered: 0,
           missed: 26,
@@ -435,6 +505,11 @@ export const PROJECT = {
     isMultiModule: true,
     'coverage-changed-files': 21.98,
     overall: {
+      covered: 40,
+      missed: 156,
+      percentage: 20.41,
+    },
+    base: {
       covered: 40,
       missed: 156,
       percentage: 20.41,

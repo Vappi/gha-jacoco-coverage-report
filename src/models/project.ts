@@ -4,12 +4,14 @@ export interface Project {
   'coverage-changed-files': number
   overall: Coverage
   changed: Coverage
+  base: Coverage
 }
 
 export interface Module {
   name: string
   overall: Coverage
   changed: Coverage
+  base: Coverage
   files: File[]
 }
 
@@ -18,6 +20,7 @@ export interface File {
   url: string
   overall: Coverage
   changed: Coverage
+  base: Coverage
   lines: Line[]
 }
 

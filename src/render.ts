@@ -31,8 +31,8 @@ function getModuleTable(
   let table = `${tableHeader}\n${tableStructure}`
   for (const module of modules) {
     const coverageDifference = getCoverageDifference(
-      module.overall,
-      module.changed
+      module.base,
+      module.overall
     )
     renderRow(
       module.name,
@@ -78,10 +78,7 @@ function getFileTable(
       if (index !== 0) {
         moduleName = ''
       }
-      const coverageDifference = getCoverageDifference(
-        file.overall,
-        file.changed
-      )
+      const coverageDifference = getCoverageDifference(file.base, file.overall)
       renderRow(
         moduleName,
         `[${file.name}](${file.url})`,
@@ -116,10 +113,8 @@ function getFileTable(
   }
 }
 
-function getCoverageDifference(overall: Coverage, changed: Coverage): number {
-  const totalInstructions = overall.covered + overall.missed
-  const missed = changed.missed
-  return -(missed / totalInstructions) * 100
+function getCoverageDifference(base: Coverage, overall: Coverage): number {
+  return (overall.percentage ?? 0) - (base.percentage ?? 0)
 }
 
 function getOverallTable(
@@ -133,8 +128,8 @@ function getOverallTable(
     emoji
   )
   const coverageDifference = getCoverageDifference(
-    project.overall,
-    project.changed
+    project.base,
+    project.overall
   )
   let coveragePercentage = `${formatCoverage(project.overall.percentage)}`
   if (shouldShow(coverageDifference)) {
