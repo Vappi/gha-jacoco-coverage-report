@@ -81,7 +81,7 @@ function getFileTable(
       const coverageDifference = getCoverageDifference(file.base, file.overall)
       renderRow(
         moduleName,
-        `[${file.name}](${file.url})`,
+        file.url !== '#' ? `[${file.name}](${file.url})` : file.name,
         file.overall.percentage,
         coverageDifference,
         file.changed.percentage,

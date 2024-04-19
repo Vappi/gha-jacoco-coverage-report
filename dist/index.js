@@ -356,7 +356,7 @@ function getModuleFromParent(parent) {
     return null;
 }
 function getFileCoverageFromPackages(packages, basePackages, files) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const resultFiles = [];
     const jacocoFiles = (0, util_1.getFilesWithCoverage)(packages);
     const baseJacocoFiles = (0, util_1.getFilesWithCoverage)(basePackages);
@@ -369,16 +369,19 @@ function getFileCoverageFromPackages(packages, basePackages, files) {
         const baseJacocoFile = baseJacocoFiles === null || baseJacocoFiles === void 0 ? void 0 : baseJacocoFiles.find(function (f) {
             return (f.packageName === jacocoFile.packageName && f.name === jacocoFile.name);
         });
-        if (githubFile) {
-            const instruction = jacocoFile.counters.find(counter => counter.name === 'instruction');
+        const instruction = jacocoFile.counters.find(counter => counter.name === 'instruction');
+        const baseInstruction = baseJacocoFile === null || baseJacocoFile === void 0 ? void 0 : baseJacocoFile.counters.find(counter => counter.name === 'instruction');
+        const isCoverageChanged = (!!instruction || !!baseInstruction) &&
+            calculatePercentage((_a = instruction === null || instruction === void 0 ? void 0 : instruction.covered) !== null && _a !== void 0 ? _a : 0, (_b = instruction === null || instruction === void 0 ? void 0 : instruction.missed) !== null && _b !== void 0 ? _b : 0) !==
+                calculatePercentage((_c = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.covered) !== null && _c !== void 0 ? _c : 0, (_d = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.missed) !== null && _d !== void 0 ? _d : 0);
+        if (githubFile || isCoverageChanged) {
             if (instruction) {
-                const baseInstruction = baseJacocoFile === null || baseJacocoFile === void 0 ? void 0 : baseJacocoFile.counters.find(counter => counter.name === 'instruction');
                 const missed = instruction.missed;
                 const covered = instruction.covered;
-                const baseMissed = (_a = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.missed) !== null && _a !== void 0 ? _a : 0;
-                const baseCovered = (_b = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.covered) !== null && _b !== void 0 ? _b : 0;
+                const baseMissed = (_e = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.missed) !== null && _e !== void 0 ? _e : 0;
+                const baseCovered = (_f = baseInstruction === null || baseInstruction === void 0 ? void 0 : baseInstruction.covered) !== null && _f !== void 0 ? _f : 0;
                 const lines = [];
-                for (const lineNumber of githubFile.lines) {
+                for (const lineNumber of (_g = githubFile === null || githubFile === void 0 ? void 0 : githubFile.lines) !== null && _g !== void 0 ? _g : []) {
                     const jacocoLine = jacocoFile.lines.find(line => line.number === lineNumber);
                     if (jacocoLine) {
                         lines.push(Object.assign({}, jacocoLine));
@@ -392,7 +395,7 @@ function getFileCoverageFromPackages(packages, basePackages, files) {
                     .reduce(sumReducer, 0.0);
                 resultFiles.push({
                     name,
-                    url: githubFile.url,
+                    url: (_h = githubFile === null || githubFile === void 0 ? void 0 : githubFile.url) !== null && _h !== void 0 ? _h : '#',
                     overall: {
                         missed,
                         covered,
@@ -526,7 +529,7 @@ function getFileTable(project, minCoverage, emoji) {
                 moduleName = '';
             }
             const coverageDifference = getCoverageDifference(file.base, file.overall);
-            renderRow(moduleName, `[${file.name}](${file.url})`, file.overall.percentage, coverageDifference, file.changed.percentage, project.isMultiModule);
+            renderRow(moduleName, file.url !== '#' ? `[${file.name}](${file.url})` : file.name, file.overall.percentage, coverageDifference, file.changed.percentage, project.isMultiModule);
         }
     }
     return project.isMultiModule

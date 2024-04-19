@@ -157,23 +157,32 @@ function getFileCoverageFromPackages(
         f.packageName === jacocoFile.packageName && f.name === jacocoFile.name
       )
     })
-
-    if (githubFile) {
-      const instruction = jacocoFile.counters.find(
-        counter => counter.name === 'instruction'
-      )
-      if (instruction) {
-        const baseInstruction = baseJacocoFile?.counters.find(
-          counter => counter.name === 'instruction'
+    const instruction = jacocoFile.counters.find(
+      counter => counter.name === 'instruction'
+    )
+    const baseInstruction = baseJacocoFile?.counters.find(
+      counter => counter.name === 'instruction'
+    )
+    const isCoverageChanged =
+      (!!instruction || !!baseInstruction) &&
+      calculatePercentage(
+        instruction?.covered ?? 0,
+        instruction?.missed ?? 0
+      ) !==
+        calculatePercentage(
+          baseInstruction?.covered ?? 0,
+          baseInstruction?.missed ?? 0
         )
 
+    if (githubFile || isCoverageChanged) {
+      if (instruction) {
         const missed = instruction.missed
         const covered = instruction.covered
         const baseMissed = baseInstruction?.missed ?? 0
         const baseCovered = baseInstruction?.covered ?? 0
 
         const lines = []
-        for (const lineNumber of githubFile.lines) {
+        for (const lineNumber of githubFile?.lines ?? []) {
           const jacocoLine = jacocoFile.lines.find(
             line => line.number === lineNumber
           )
@@ -191,7 +200,7 @@ function getFileCoverageFromPackages(
           .reduce(sumReducer, 0.0)
         resultFiles.push({
           name,
-          url: githubFile.url,
+          url: githubFile?.url ?? '#',
           overall: {
             missed,
             covered,
